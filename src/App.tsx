@@ -2,7 +2,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import { AppRoutes } from './routes/AppRoutes';
-import { UnderDevelopmentOverlay } from './components/UnderDevelopmentOverlay';
+// import { UnderDevelopmentOverlay } from './components/UnderDevelopmentOverlay';
 import './index.css';
 import '@mantine/carousel/styles.css';
 import '@mantine/core/styles.css';
@@ -15,7 +15,7 @@ function App() {
   return (
     <MantineProvider>
       <Notifications />
-      <UnderDevelopmentOverlay />
+      {/* <UnderDevelopmentOverlay /> */}
       <Router>
         <AppRoutes />
       </Router>
