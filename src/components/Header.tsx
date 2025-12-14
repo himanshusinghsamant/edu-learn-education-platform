@@ -1,12 +1,10 @@
-import { Container, Button, Menu, UnstyledButton } from '@mantine/core';
-import { IconSearch, IconShoppingCart, IconWorld, IconMenu2, IconX, IconChevronDown, IconChevronUp } from '@tabler/icons-react';
+import { Container } from '@mantine/core';
+import { IconMenu2, IconX } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [bookOpen, setBookOpen] = useState(false);
-  const [moneyOpen, setMoneyOpen] = useState(false);
-  const [communityOpen, setCommunityOpen] = useState(false);
+  const [active, setActive] = useState<string>('hero');
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? 'hidden' : '';
@@ -15,10 +13,40 @@ export function Header() {
     };
   }, [mobileOpen]);
 
+  useEffect(() => {
+    const sectionIds = ['hero', 'technologies', 'model', 'career', 'about'];
+    
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 100; // offset for header height
+      
+      // Find which section is currently in view
+      for (let i = sectionIds.length - 1; i >= 0; i--) {
+        const section = document.getElementById(sectionIds[i]);
+        if (section) {
+          const sectionTop = section.offsetTop;
+          if (scrollPosition >= sectionTop) {
+            setActive(sectionIds[i]);
+            break;
+          }
+        }
+      }
+    };
+
+    // Initial check
+    handleScroll();
+    
+    // Listen to scroll events
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
       <Container size="xl" className="px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-7 h-16">
+        <div className="flex items-center gap-7 h-20">
           {/* Mobile: Burger */}
           <button
             aria-label="Open menu"
@@ -27,104 +55,23 @@ export function Header() {
           >
             <IconMenu2 size={22} />
           </button>
-          {/* Left: Logo */}
-          <a href="/" className="flex items-center gap-3">
+          {/* Left: Logo (not a link) */}
+          <div className="flex items-center gap-3 p-2">
             <img
-              src="/logo-udemy.svg"
-              alt="Logo"
-              className="h-8 w-auto"
+              src="/Aivanu_logo.png"
+              alt="AIVANU"
+              className="w-16 rounded-full"
             />
-          </a>
-
-          {/* Explore */}
-          <a href="#" className="hidden lg:inline-block text-sm text-gray-700 hover:text-black">Hunting</a>
-
-          {/* Center: Search */}
-          <div className="flex-1 hidden md:flex justify-center">
-            <div className="w-full max-w-[820px] relative">
-              <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
-              <input
-                type="text"
-                placeholder="Search for anything"
-                className="w-full h-12 rounded-full border border-gray-300 pl-11 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900/10"
-              />
-            </div>
           </div>
 
-          {/* Right: Optional dropdown menus */}
-          <div className="hidden xl:flex items-center gap-5">
-            <Menu shadow="md" width={200} withinPortal opened={bookOpen} onOpen={() => setBookOpen(true)} onClose={() => setBookOpen(false)}>
-              <Menu.Target>
-                <UnstyledButton className="px-2 py-1 text-sm text-gray-700 hover:text-black rounded hover:bg-gray-50 flex items-center gap-1">
-                  <span>BookShell</span>
-                  {bookOpen ? <IconChevronUp size={16} /> : <IconChevronDown size={16} />}
-                </UnstyledButton>
-              </Menu.Target>
-              <Menu.Dropdown>
-                <Menu.Item>Course Name</Menu.Item>
-                <Menu.Item>Techno Log</Menu.Item>
-                <Menu.Divider />
-                <Menu.Item>Projects</Menu.Item>
-                <Menu.Item>Online Resourse  </Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
-            <Menu shadow="md" width={200} withinPortal opened={moneyOpen} onOpen={() => setMoneyOpen(true)} onClose={() => setMoneyOpen(false)}>
-              <Menu.Target>
-                <UnstyledButton className="px-2 py-1 text-sm text-gray-700 hover:text-black rounded hover:bg-gray-50 flex items-center gap-1">
-                  <span>MoneyMap</span>
-                  {moneyOpen ? <IconChevronUp size={16} /> : <IconChevronDown size={16} />}
-                </UnstyledButton>
-              </Menu.Target>
-              <Menu.Dropdown>
-                <Menu.Item>Course Price</Menu.Item>
-                <Menu.Item>Analytic Price</Menu.Item>
-                <Menu.Item>DS Price</Menu.Item>
-                <Menu.Item>Cyber Price</Menu.Item>
-                <Menu.Item>Web Price</Menu.Item>
-                <Menu.Item>Cloud Price</Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
-            <Menu shadow="md" width={200} withinPortal opened={communityOpen} onOpen={() => setCommunityOpen(true)} onClose={() => setCommunityOpen(false)}>
-              <Menu.Target>
-                <UnstyledButton className="px-2 py-1 text-sm text-gray-700 hover:text-black rounded hover:bg-gray-50 flex items-center gap-1">
-                  <span>Community</span>
-                  {communityOpen ? <IconChevronUp size={16} /> : <IconChevronDown size={16} />}
-                </UnstyledButton>
-              </Menu.Target>
-              <Menu.Dropdown>
-                <Menu.Item>Events</Menu.Item>
-                <Menu.Item>Learning Stories</Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
-          </div>
-
-          {/* Right: Icons + Auth */}
-          <div className="flex items-center gap-2 ml-auto">
-            <button aria-label="Cart" className="p-2 rounded hover:bg-gray-100">
-              <IconShoppingCart size={22} />
-            </button>
-            <Button variant="default" size="compact-sm" className="hidden sm:inline-flex rounded-md border-gray-300">
-              Log in
-            </Button>
-            <Button size="compact-sm" className="hidden sm:inline-flex bg-purple-600 hover:bg-purple-700 text-white rounded-md">
-              Sign up
-            </Button>
-            <Menu shadow="md" width={200} withinPortal>
-              <Menu.Target>
-                <button aria-label="Language" className="p-2 rounded hover:bg-gray-100">
-                  <IconWorld size={22} />
-                </button>
-              </Menu.Target>
-              <Menu.Dropdown>
-                <Menu.Label>Select language</Menu.Label>
-                <Menu.Item>English</Menu.Item>
-                <Menu.Item>हिन्दी (Hindi)</Menu.Item>
-                <Menu.Item>Español (Spanish)</Menu.Item>
-                <Menu.Item>Français (French)</Menu.Item>
-                <Menu.Item>Deutsch (German)</Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
-          </div>
+          {/* Center: Nav links */}
+          <nav className="ml-auto hidden lg:flex items-center gap-6">
+            <a href="#hero" className={`text-sm font-medium transition relative ${active==='hero' ? 'text-black font-bold' : 'text-gray-700 hover:text-black'} after:content-[''] after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:bg-gradient-to-r after:from-yellow-400 after:to-amber-500 after:w-0 hover:after:w-full after:transition-all after:duration-300 ${active==='hero' ? 'after:w-full' : ''}`}>Home</a>
+            <a href="#technologies" className={`text-sm font-medium transition relative ${active==='technologies' ? 'text-black font-bold' : 'text-gray-700 hover:text-black'} after:content-[''] after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:bg-gradient-to-r after:from-yellow-400 after:to-amber-500 after:w-0 hover:after:w-full after:transition-all after:duration-300 ${active==='technologies' ? 'after:w-full' : ''}`}>Technologies</a>
+            <a href="#model" className={`text-sm font-medium transition relative ${active==='model' ? 'text-black font-bold' : 'text-gray-700 hover:text-black'} after:content-[''] after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:bg-gradient-to-r after:from-yellow-400 after:to-amber-500 after:w-0 hover:after:w-full after:transition-all after:duration-300 ${active==='model' ? 'after:w-full' : ''}`}>Learning Model</a>
+            <a href="#career" className={`text-sm font-medium transition relative ${active==='career' ? 'text-black font-bold' : 'text-gray-700 hover:text-black'} after:content-[''] after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:bg-gradient-to-r after:from-yellow-400 after:to-amber-500 after:w-0 hover:after:w-full after:transition-all after:duration-300 ${active==='career' ? 'after:w-full' : ''}`}>Career</a>
+            <a href="#about" className={`text-sm font-medium transition relative ${active==='about' ? 'text-black font-bold' : 'text-gray-700 hover:text-black'} after:content-[''] after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:bg-gradient-to-r after:from-yellow-400 after:to-amber-500 after:w-0 hover:after:w-full after:transition-all after:duration-300 ${active==='about' ? 'after:w-full' : ''}`}>About</a>
+          </nav>
         </div>
       </Container>
 
@@ -136,8 +83,8 @@ export function Header() {
             <div className="flex items-center justify-between px-4 h-16 border-b border-gray-100">
               <div className="flex items-center gap-3">
                 <img
-                  src="/new_one_linked_kun.png"
-                  alt="Logo"
+                  src="/Aivanu_logo.png"
+                  alt="AIVANU"
                   className="h-7 w-auto"
                 />
               </div>
@@ -146,87 +93,14 @@ export function Header() {
               </button>
             </div>
 
-            <div className="p-4 border-b border-gray-100">
-              <div className="relative">
-                <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
-                <input
-                  type="text"
-                  placeholder="Search for anything"
-                  className="w-full rounded-full border border-gray-300 pl-9 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900/10"
-                />
-              </div>
-            </div>
-
             <div className="p-4 space-y-2">
-              <a href="#" className="block px-3 py-2 rounded hover:bg-gray-100" onClick={() => setMobileOpen(false)}>Discover</a>
-              <Menu shadow="md" width={240} withinPortal>
-                <Menu.Target>
-                  <UnstyledButton className="w-full text-left px-3 py-2 rounded hover:bg-gray-100 flex items-center justify-between">
-                    <span>BookShell</span>
-                    <IconChevronDown size={16} />
-                  </UnstyledButton>
-                </Menu.Target>
-                <Menu.Dropdown>
-                  <Menu.Item onClick={() => setMobileOpen(false)}>Course Name</Menu.Item>
-                  <Menu.Item onClick={() => setMobileOpen(false)}>Techno Log</Menu.Item>
-                  <Menu.Divider />
-                  <Menu.Item onClick={() => setMobileOpen(false)}>Projects</Menu.Item>
-                  <Menu.Item onClick={() => setMobileOpen(false)}>Online Resourse </Menu.Item>
-                </Menu.Dropdown>
-              </Menu>
-              <Menu shadow="md" width={240} withinPortal>
-                <Menu.Target>
-                  <UnstyledButton className="w-full text-left px-3 py-2 rounded hover:bg-gray-100 flex items-center justify-between">
-                    <span>MoneyMap</span>
-                    <IconChevronDown size={16} />
-                  </UnstyledButton>
-                </Menu.Target>
-                <Menu.Dropdown>
-                  <Menu.Item onClick={() => setMobileOpen(false)}>Course Price</Menu.Item>
-                  <Menu.Item onClick={() => setMobileOpen(false)}>Analytic Price</Menu.Item>
-                  <Menu.Item onClick={() => setMobileOpen(false)}>DS Price</Menu.Item>
-                  <Menu.Item onClick={() => setMobileOpen(false)}>Cyber Price</Menu.Item>
-                  <Menu.Item onClick={() => setMobileOpen(false)}>Web Price</Menu.Item>
-                  <Menu.Item onClick={() => setMobileOpen(false)}>Cloud Price</Menu.Item>
-                  <Menu.Item onClick={() => setMobileOpen(false)}>Savings</Menu.Item>
-                </Menu.Dropdown>
-              </Menu>
-              <Menu shadow="md" width={240} withinPortal>
-                <Menu.Target>
-                  <UnstyledButton className="w-full text-left px-3 py-2 rounded hover:bg-gray-100 flex items-center justify-between">
-                    <span>Community</span>
-                    <IconChevronDown size={16} />
-                  </UnstyledButton>
-                </Menu.Target>
-                <Menu.Dropdown>
-                  <Menu.Item onClick={() => setMobileOpen(false)}>Learning Stories</Menu.Item>
-                  <Menu.Item onClick={() => setMobileOpen(false)}>Events</Menu.Item>
-                </Menu.Dropdown>
-              </Menu>
+              <a href="#hero" className={`block px-3 py-2 rounded font-medium transition-all ${active==='hero' ? 'bg-gradient-to-r from-yellow-50 to-amber-50 text-black font-bold border-l-4 border-yellow-500' : 'hover:bg-gray-50'}`} onClick={() => setMobileOpen(false)}>Home</a>
+              <a href="#technologies" className={`block px-3 py-2 rounded font-medium transition-all ${active==='technologies' ? 'bg-gradient-to-r from-yellow-50 to-amber-50 text-black font-bold border-l-4 border-yellow-500' : 'hover:bg-gray-50'}`} onClick={() => setMobileOpen(false)}>Technologies</a>
+              <a href="#model" className={`block px-3 py-2 rounded font-medium transition-all ${active==='model' ? 'bg-gradient-to-r from-yellow-50 to-amber-50 text-black font-bold border-l-4 border-yellow-500' : 'hover:bg-gray-50'}`} onClick={() => setMobileOpen(false)}>Learning Model</a>
+              <a href="#career" className={`block px-3 py-2 rounded font-medium transition-all ${active==='career' ? 'bg-gradient-to-r from-yellow-50 to-amber-50 text-black font-bold border-l-4 border-yellow-500' : 'hover:bg-gray-50'}`} onClick={() => setMobileOpen(false)}>Career</a>
+              <a href="#about" className={`block px-3 py-2 rounded font-medium transition-all ${active==='about' ? 'bg-gradient-to-r from-yellow-50 to-amber-50 text-black font-bold border-l-4 border-yellow-500' : 'hover:bg-gray-50'}`} onClick={() => setMobileOpen(false)}>About</a>
             </div>
 
-            <div className="p-4 border-t border-gray-100 space-y-3">
-              <Menu shadow="md" width={240} withinPortal>
-                <Menu.Target>
-                  <UnstyledButton className="w-full text-left px-3 py-2 rounded hover:bg-gray-100 flex items-center gap-2">
-                    <IconWorld size={18} />
-                    <span>Language</span>
-                  </UnstyledButton>
-                </Menu.Target>
-                <Menu.Dropdown>
-                  <Menu.Label>Select language</Menu.Label>
-                  <Menu.Item onClick={() => setMobileOpen(false)}>English</Menu.Item>
-                  <Menu.Item onClick={() => setMobileOpen(false)}>हिन्दी (Hindi)</Menu.Item>
-                  <Menu.Item onClick={() => setMobileOpen(false)}>Español (Spanish)</Menu.Item>
-                  <Menu.Item onClick={() => setMobileOpen(false)}>Français (French)</Menu.Item>
-                  <Menu.Item onClick={() => setMobileOpen(false)}>Deutsch (German)</Menu.Item>
-                </Menu.Dropdown>
-              </Menu>
-              <div className="flex gap-3">
-                <Button variant="default" fullWidth onClick={() => setMobileOpen(false)}>Log in</Button>
-                <Button className="bg-purple-600 hover:bg-purple-700 text-white" fullWidth onClick={() => setMobileOpen(false)}>Sign up</Button>
-              </div>
-            </div>
           </div>
         </div>
       )}

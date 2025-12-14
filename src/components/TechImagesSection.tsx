@@ -91,6 +91,8 @@ export const TechImagesSection: React.FC = () => {
     autoplaySpeed: 2000,
     pauseOnHover: true,
     arrows: true,
+    swipeToSlide: true,
+    touchThreshold: 12,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
     responsive: [
@@ -121,6 +123,15 @@ export const TechImagesSection: React.FC = () => {
           slidesToShow: 2,
           slidesToScroll: 1,
         }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          dots: true,
+          arrows: false
+        }
       }
     ]
   };
@@ -130,9 +141,9 @@ export const TechImagesSection: React.FC = () => {
       <Container size="xl" className="px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12 lg:mb-16">
-          <Title 
-            order={2} 
-            size="2.5rem" 
+          <Title
+            order={2}
+            size="2.5rem"
             className="mb-4 font-display font-bold text-gray-900"
             style={{ fontFamily: 'Poppins, system-ui, sans-serif', fontWeight: 800 }}
           >
@@ -141,17 +152,17 @@ export const TechImagesSection: React.FC = () => {
               Technologies
             </span>
           </Title>
-          <Text 
-            size="lg" 
+          <Text
+            size="lg"
             className="text-gray-600 mx-auto leading-relaxed font-medium"
             style={{ fontFamily: 'Inter, system-ui, sans-serif' }}
           >
-            Learn the most sought-after skills in data science, AI, cloud computing, and more
+            Learn the most sought-after skills in data science, AI, Machine Learning, and more
           </Text>
         </div>
 
         {/* Tech Images Slider */}
-        <div className="relative">
+        <div className="relative overflow-hidden">
           <Slider {...sliderSettings} className="tech-slider">
             {techImages.map((tech, index) => (
               <div key={tech.name} className="px-2">
@@ -172,7 +183,7 @@ export const TechImagesSection: React.FC = () => {
                     {/* Hover overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-blue-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
                   </div>
-                  
+
                   {/* Tech Name */}
                   <Text
                     size="xs"
@@ -190,12 +201,14 @@ export const TechImagesSection: React.FC = () => {
 
         {/* Bottom CTA */}
         <div className="text-center mt-12 lg:mt-16">
-          <button 
-            className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+          <button
+            className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer"
             style={{ fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 700 }}
           >
             Explore All Technologies
+
           </button>
+          <p className="text-gray-600 text-sm mt-2">With AIVANU</p>
         </div>
       </Container>
     </section>

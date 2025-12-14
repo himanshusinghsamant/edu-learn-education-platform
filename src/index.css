@@ -14,3 +14,9 @@
   0%, 100% { transform: translateY(0px) rotate(0deg); }
   50% { transform: translateY(-20px) rotate(180deg); }
 }
+
+/* Smooth scroll for in-page navigation (accounts for sticky header) */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+}
