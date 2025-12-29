@@ -38,7 +38,7 @@ export const TechImagesSection: React.FC = () => {
   const NextArrow = ({ onClick }: { onClick?: () => void }) => (
     <button
       onClick={onClick}
-      className="hidden lg:block absolute -right-10 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white shadow-lg hover:shadow-xl rounded-full p-3 transition-all duration-300 hover:scale-110 border border-gray-200"
+      className="hidden lg:block absolute -right-2 z-30 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white shadow-lg hover:shadow-xl rounded-full p-3 transition-all duration-300 hover:scale-110 border border-gray-200"
       aria-label="Next slide"
     >
       <svg
@@ -61,7 +61,7 @@ export const TechImagesSection: React.FC = () => {
   const PrevArrow = ({ onClick }: { onClick?: () => void }) => (
     <button
       onClick={onClick}
-      className="hidden lg:block absolute -left-10 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white shadow-lg hover:shadow-xl rounded-full p-3 transition-all duration-300 hover:scale-110 border border-gray-200"
+      className="hidden lg:block absolute -left-2 top-1/2 -translate-y-1/2 z-30 bg-white/90 hover:bg-white shadow-lg hover:shadow-xl rounded-full p-3 transition-all duration-300 hover:scale-110 border border-gray-200"
       aria-label="Previous slide"
     >
       <svg
@@ -122,14 +122,16 @@ export const TechImagesSection: React.FC = () => {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
+          arrows: false,
+          dots: false
         }
       },
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 2,
           slidesToScroll: 1,
-          dots: true,
+          dots: false,
           arrows: false
         }
       }
@@ -162,18 +164,35 @@ export const TechImagesSection: React.FC = () => {
         </div>
 
         {/* Tech Images Slider */}
-        <div className="relative overflow-hidden">
+        <div className="relative tech-slider-container">
+          <style>
+            {`
+              .tech-slider .slick-track {
+                display: flex !important;
+                gap: 0;
+              }
+              .tech-slider .slick-slide {
+                height: inherit !important;
+                display: flex !important;
+                justify-content: center;
+              }
+              .tech-slider .slick-slide > div {
+                width: 100%;
+                display: flex;
+              }
+            `}
+          </style>
           <Slider {...sliderSettings} className="tech-slider">
             {techImages.map((tech, index) => (
-              <div key={tech.name} className="px-2">
+              <div key={tech.name} className="px-2 h-full py-4">
                 <div
-                  className="group relative bg-white rounded-2xl p-4 sm:p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100"
+                  className="group relative bg-white rounded-2xl p-4 sm:p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 h-full flex flex-col w-full"
                   style={{
                     animationDelay: `${index * 0.05}s`,
                   }}
                 >
                   {/* Image Container */}
-                  <div className="aspect-square relative overflow-hidden rounded-xl mb-3">
+                  <div className="aspect-square relative overflow-hidden rounded-xl mb-3 flex-shrink-0">
                     <img
                       src={tech.image}
                       alt={tech.name}
@@ -185,13 +204,15 @@ export const TechImagesSection: React.FC = () => {
                   </div>
 
                   {/* Tech Name */}
-                  <Text
-                    size="xs"
-                    className="text-center font-bold text-gray-800 group-hover:text-blue-600 transition-colors duration-300 leading-tight"
-                    style={{ fontFamily: 'Inter, system-ui, sans-serif' }}
-                  >
-                    {tech.name}
-                  </Text>
+                  <div className="mt-auto">
+                    <Text
+                      size="xs"
+                      className="text-center font-bold text-gray-800 group-hover:text-blue-600 transition-colors duration-300 leading-tight"
+                      style={{ fontFamily: 'Inter, system-ui, sans-serif' }}
+                    >
+                      {tech.name}
+                    </Text>
+                  </div>
                 </div>
               </div>
             ))}
@@ -200,15 +221,15 @@ export const TechImagesSection: React.FC = () => {
 
 
         {/* Bottom CTA */}
-        <div className="text-center mt-12 lg:mt-16">
+        <div className="text-center mt-12 lg:mt-16"> 
           <button
-            className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer"
+            className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
             style={{ fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 700 }}
           >
             Explore All Technologies
 
           </button>
-          <p className="text-gray-600 text-sm mt-2">With AIVANU</p>
+          <p className="text-gray-600 text-sm mt-2 font-bold font-serif">With AIVANU</p>
         </div>
       </Container>
     </section>
