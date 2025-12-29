@@ -53,9 +53,9 @@ export const Footer = () => {
                 <IconMail size={16} />
                 <span>team@aivanu.com</span>
               </a>
-              <a href="tel:8700094763" className="flex items-center gap-2 hover:text-white transition-colors">
+              <a href="tel:+918700094763" className="flex items-center gap-2 hover:text-white transition-colors">
                 <IconPhone size={16} />
-                <span>8700094763</span>
+                <span>+91 87000 94763</span>
               </a>
             </div>
           </div>
